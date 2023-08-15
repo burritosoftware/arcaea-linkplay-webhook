@@ -5,6 +5,9 @@ import select
 # Create a journal reader object
 j = journal.Reader()
 
+# Match only the Linkplay service
+j.add_match(_SYSTEMD_UNIT="arcaea-linkplay.service")
+
 # Set the log level to INFO
 j.log_level(journal.LOG_INFO)
 
@@ -30,4 +33,4 @@ while True:
             # Get the next entry
             entry = j.get_next()
             # Print the timestamp and the message to the console
-            print(str(entry["__REALTIME_TIMESTAMP"]) + " " + entry["MESSAGE"])
+            print(entry["MESSAGE"])
