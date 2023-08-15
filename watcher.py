@@ -95,8 +95,13 @@ while True:
                         data = json.load(f)
 
                     if room_code in data:
+                        pnf = True
+                        for item in data[room_code]['info'].split('\n'):
+                            if f"👤 {player}" == item:
+                                pnf = False
+                        if pnf:
+                            data[room_code]['info'] = data[room_code]['info'] + "\n👤 " + player
                         id = data[room_code]['id']
-                        data[room_code]['info'] = data[room_code]['info'] + "\n👤 " + player
                         info = data[room_code]['info']
                         creation = data[room_code]['creation']
                         with open("database.json", "w") as f:
