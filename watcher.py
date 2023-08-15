@@ -71,6 +71,7 @@ while True:
                     data[room_code] = response.json()['id']
                     with open("database.json", "w") as f:
                         json.dump(data, f)
+                    print(response.json())
                 elif "joins room" in msg:
                     pl1 = msg.find("`") # find the index of the first backtick
                     pl2 = msg.find("`", pl1 + 1) # find the index of the second backtick
