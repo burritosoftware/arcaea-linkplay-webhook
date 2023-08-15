@@ -70,13 +70,14 @@ while True:
                         json.dump(data, f)
                 elif "joins room" in msg:
                     pl1 = msg.find("`") # find the index of the first backtick
-                    pl2 = msg.find("`", rc1 + 1) # find the index of the second backtick
+                    pl2 = msg.find("`", pl1 + 1) # find the index of the second backtick
                     player = msg[pl1 + 1:pl2]
 
                     rc1 = msg.find("`", pl2 + 1) # find the index of the third backtick
                     rc2 = msg.find("`", rc1 + 1) # find the index of the fourth backtick
                     room_code = msg[rc1 + 1:rc2]
-
+                    print("Joiner " + player)
+                    print(room_code)
                     data = {}
                     with open("database.json", "r") as f:
                         data = json.load(f)
