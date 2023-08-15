@@ -1,5 +1,6 @@
 # Import the journal module from systemd package
 from systemd import journal
+import select
 
 # Create a journal reader object
 j = journal.Reader()
