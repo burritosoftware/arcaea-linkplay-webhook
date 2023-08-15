@@ -50,7 +50,7 @@ while True:
 
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
                     linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created!", color="2ecc71")
-                    linkPlayEmbed.add_embed_field(name=room_code, value=f"**Joined Players**\n👑 {player}")
+                    linkPlayEmbed.add_embed_field(name=room_code, value=f"**Joined Players**\n>>> 👑 {player}")
 
                     webhook.add_embed(linkPlayEmbed)
                     webhook.execute()
