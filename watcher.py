@@ -52,4 +52,5 @@ while True:
                     linkPlayEmbed = DiscordEmbed(title="Room Created", description="Link Play room created for Arcaea.", color="2ecc71")
                     linkPlayEmbed.add_embed_field(name=room_code, value=f"👑 {player}")
 
+                    webhook.add_embed(linkPlayEmbed)
                     webhook.execute()
