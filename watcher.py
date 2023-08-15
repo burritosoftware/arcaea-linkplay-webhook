@@ -65,7 +65,7 @@ while True:
                     data = {}
                     with open("database.json", "r") as f:
                         data = json.load(f)
-                    data[room_code] = response['id']
+                    data[room_code] = response.json()['id']
                     with open("database.json", "w") as f:
                         json.dump(data, f)
                 elif "joins room" in msg:
