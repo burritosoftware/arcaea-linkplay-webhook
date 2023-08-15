@@ -49,8 +49,8 @@ while True:
                     player = msg[pl1 + 1:pl2]
 
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
-                    linkPlayEmbed = DiscordEmbed(title="Room Created", description="Link Play room created for Arcaea.", color="2ecc71")
-                    linkPlayEmbed.add_embed_field(name=room_code, value=f"👑 {player}")
+                    linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created!", color="2ecc71")
+                    linkPlayEmbed.add_embed_field(name=room_code, value=f"**Joined Players**\n👑 {player}")
 
                     webhook.add_embed(linkPlayEmbed)
                     response = webhook.execute()
