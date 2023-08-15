@@ -80,10 +80,11 @@ while True:
                     data = {}
                     with open("database.json", "r") as f:
                         data = json.load(f)
-                    
+                    print("testing")
                     if room_code in data:
+                        print("test")
                         id = data['room_code']
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
-                        webhook.description = "Status will not be updated for left players or closed rooms."
+                        webhook.description = ""
                         print(webhook.get_embeds()[0])
                         webhook.edit()
