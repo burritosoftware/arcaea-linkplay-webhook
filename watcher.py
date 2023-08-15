@@ -33,4 +33,4 @@ while True:
             # Get the next entry
             entry = j.get_next()
             # Print the timestamp and the message to the console
-            print(entry["MESSAGE"])
+            print(entry)
