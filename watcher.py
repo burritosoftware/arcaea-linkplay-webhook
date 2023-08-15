@@ -37,6 +37,9 @@ j.get_previous()
 p = select.poll()
 p.register(j, j.get_events())
 
+linkPlayBaseEmbed = DiscordEmbed(title="Link Play Room", color="2ecc71")
+linkPlayBaseEmbed.set_footer(text="Room info won't update for closed rooms or left players.")
+
 # Loop indefinitely
 while True:
     # Wait for an event
@@ -57,9 +60,10 @@ while True:
                     player = msg[pl1 + 1:pl2]
 
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
-                    linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created!\nThis message will update once another player joins.", color="2ecc71")
-                    linkPlayEmbed.add_embed_field(name="Room Info", value=f"🚪 `{room_code}`\n👥 **Players**\n>>> 👑 {player}")
-                    linkPlayEmbed.set_footer(text="Room info won't update for closed rooms or left players.")
+                    linkPlayEmbed = linkPlayBaseEmbed
+                    linkPlayEmbed.set_description(description="New Link Play room created!\nThis message will update once another player joins.")
+                    info = f"🚪 `{room_code}`\n👥 **Players**\n>>> 👑 {player}\ntest"
+                    linkPlayEmbed.add_embed_field(name="Room Info", value=info)
                     linkPlayEmbed.set_timestamp()
 
                     webhook.add_embed(linkPlayEmbed)
@@ -68,10 +72,14 @@ while True:
                     data = {}
                     with open("database.json", "r") as f:
                         data = json.load(f)
-                    data[room_code] = response.json()['id']
+
+                    data[room_code] = {}
+                    data[room_code]['id'] = response.json()['id']
+                    data[room_code]['info'] = info
+                    data[room_code]['creation'] = time.time()
+
                     with open("database.json", "w") as f:
                         json.dump(data, f)
-                    print(response.json())
                 elif "joins room" in msg:
                     pl1 = msg.find("`") # find the index of the first backtick
                     pl2 = msg.find("`", pl1 + 1) # find the index of the second backtick
@@ -86,9 +94,10 @@ while True:
                         data = json.load(f)
 
                     if room_code in data:
-                        id = data[room_code]
-                        print(id)
+                        id = data[room_code]['id']
+                        info = data[room_code]['info']
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
-                        webhook.description = f"📥 Last join was <t:{str(int(time.time()))}:R>."
-                        print(webhook.get_embeds())
+                        linkPlayEmbed = linkPlayBaseEmbed
+                        linkPlayEmbed.set_description(description=f"📥 Last join was <t:{str(int(time.time()))}:R>.")
+                        linkPlayEmbed.add_embed_field(name="Room Info", value=info)
                         webhook.edit()
