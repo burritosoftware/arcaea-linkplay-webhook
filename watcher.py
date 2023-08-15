@@ -88,5 +88,5 @@ while True:
                         id = data[room_code]
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
                         webhook.description = f"📥 Last join was <t:{str(int(time.time()))}:R>."
-                        print(webhook.get_embeds()[0])
+                        print(webhook.get_embeds())
                         webhook.edit()
