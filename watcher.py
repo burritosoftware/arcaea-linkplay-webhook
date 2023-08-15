@@ -86,3 +86,4 @@ while True:
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
                         webhook.description = "Status will not be updated for left players or closed rooms."
                         print(webhook.get_embeds()[0])
+                        webhook.edit()
