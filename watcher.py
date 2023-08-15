@@ -53,5 +53,4 @@ while True:
                     linkPlayEmbed.add_embed_field(name=room_code, value=f"**Joined Players**\n👑 {player}")
 
                     webhook.add_embed(linkPlayEmbed)
-                    response = webhook.execute()
-                    print(response)
+                    webhook.execute()
