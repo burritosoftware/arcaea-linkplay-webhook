@@ -1,1 +1,3 @@
 systemd-python
+python-dotenv
+discord-webhook
