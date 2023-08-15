@@ -3,9 +3,16 @@ from systemd import journal
 import select
 from dotenv import load_dotenv
 import os
+import json
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
 load_dotenv()
+
+
+# Check if database.json exists
+if not os.path.exists("database.json"):
+    with open("database.json", "w") as f:
+        json.dump({}, f)
 
 # Create a journal reader object
 j = journal.Reader()
@@ -54,4 +61,28 @@ while True:
 
                     webhook.add_embed(linkPlayEmbed)
                     response = webhook.execute()
+
+                    data = {}
+                    with open("database.json", "r") as f:
+                        data = json.load(f)
+                    data[room_code] = response['id']
+                    with open("database.json", "w") as f:
+                        json.dump(data, f)
+                elif "joins room" in msg:
+                    pl1 = msg.find("`") # find the index of the first backtick
+                    pl2 = msg.find("`", rc1 + 1) # find the index of the second backtick
+                    player = msg[pl1 + 1:pl2]
+
+                    rc1 = msg.find("`", pl2 + 1) # find the index of the third backtick
+                    rc2 = msg.find("`", rc1 + 1) # find the index of the fourth backtick
+                    room_code = msg[rc1 + 1:rc2]
+
+                    data = {}
+                    with open("database.json", "r") as f:
+                        data = json.load(f)
                     
+                    if room_code in data:
+                        id = data['room_code']
+                        webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
+                        webhook.description = "Status will not be updated for left players or closed rooms."
+                        print(webhook.get_embeds()[0])
