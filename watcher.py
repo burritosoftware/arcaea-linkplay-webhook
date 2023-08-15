@@ -97,6 +97,8 @@ while True:
                     if room_code in data:
                         pnf = True
                         for item in data[room_code]['info'].split('\n'):
+                            if f">>> 👑 {player}" == item:
+                                pnf = False
                             if f"👤 {player}" == item:
                                 pnf = False
                         if pnf:
