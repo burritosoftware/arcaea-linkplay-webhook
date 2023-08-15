@@ -33,5 +33,9 @@ while True:
             # Get the next entry
             entry = j.get_next()
             if entry != {}:
-                # Print the timestamp and the message to the console
-                print(entry['MESSAGE'])
+                msg = entry['MESSAGE']
+                if "Create room" in msg:
+                    start = msg.find("`") # find the index of the first backtick
+                    end = msg.find("`", start + 1) # find the index of the second backtick
+                    room_code = msg[start + 1:end]
+                    print("New room: " + room_code)
