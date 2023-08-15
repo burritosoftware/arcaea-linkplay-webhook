@@ -108,7 +108,7 @@ while True:
                             json.dump(data, f)
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
                         linkPlayEmbed = copy.deepcopy(linkPlayBaseEmbed)
-                        linkPlayEmbed.set_description(description=f"📥 Last join was {player}, <t:{str(int(time.time()))}:R>.")
+                        linkPlayEmbed.set_description(description=f"📥 Latest join was {player}, <t:{str(int(time.time()))}:R>.")
                         linkPlayEmbed.add_embed_field(name="Room Info", value=info)
                         linkPlayEmbed.set_timestamp(timestamp=creation)
                         webhook.add_embed(linkPlayEmbed)
