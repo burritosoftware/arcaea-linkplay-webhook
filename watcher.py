@@ -57,7 +57,7 @@ while True:
                     player = msg[pl1 + 1:pl2]
 
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
-                    linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created! This message will update once another player joins.", color="2ecc71")
+                    linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created!\nThis message will update once another player joins.", color="2ecc71")
                     linkPlayEmbed.add_embed_field(name="Room Info", value=f"🚪 `{room_code}`\n👥 **Players**\n>>> 👑 {player}")
                     linkPlayEmbed.set_footer(text="Room info won't update for closed rooms or left players.")
                     linkPlayEmbed.set_timestamp()
@@ -86,6 +86,7 @@ while True:
 
                     if room_code in data:
                         id = data[room_code]
+                        print(id)
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
                         webhook.description = f"📥 Last join was <t:{str(int(time.time()))}:R>."
                         print(webhook.get_embeds())
