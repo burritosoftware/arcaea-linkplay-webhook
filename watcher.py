@@ -1,12 +1,17 @@
 # Import the journal module from systemd package
 from systemd import journal
 import select
+from dotenv import load_dotenv
+import os
+from discord_webhook import DiscordWebhook, DiscordEmbed
+
+load_dotenv()
 
 # Create a journal reader object
 j = journal.Reader()
 
 # Match only the Linkplay service
-j.add_match(_SYSTEMD_UNIT="arcaea-linkplay.service")
+j.add_match(_SYSTEMD_UNIT=f"{os.getenv('LINKPLAY_SERVICE')}.service")
 
 # Set the log level to INFO
 j.log_level(journal.LOG_INFO)
@@ -42,4 +47,9 @@ while True:
                     pl1 = msg.find("`", rc2 + 1) # find the index of the third backtick
                     pl2 = msg.find("`", pl1 + 1) # find the index of the fourth backtick
                     player = msg[pl1 + 1:pl2]
-                    print("New room:" + room_code + " - " + player)
+
+                    webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
+                    linkPlayEmbed = DiscordEmbed(title="Room Created", description="Link Play room created for Arcaea.", color="2ecc71")
+                    linkPlayEmbed.add_embed_field(name=room_code, value=f"👑 {player}")
+
+                    webhook.execute()
