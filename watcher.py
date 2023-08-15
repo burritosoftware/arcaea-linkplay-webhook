@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 import time
+import copy
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
 load_dotenv()
@@ -60,7 +61,7 @@ while True:
                     player = msg[pl1 + 1:pl2]
 
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
-                    linkPlayEmbed = linkPlayBaseEmbed
+                    linkPlayEmbed = copy.deepcopy(linkPlayBaseEmbed)
                     linkPlayEmbed.set_description(description="New Link Play room created!\nThis message will update once another player joins.")
                     info = f"🚪 `{room_code}`\n👥 **Players**\n>>> 👑 {player}"
                     linkPlayEmbed.add_embed_field(name="Room Info", value=info)
@@ -101,7 +102,7 @@ while True:
                         with open("database.json", "w") as f:
                             json.dump(data, f)
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
-                        linkPlayEmbed = linkPlayBaseEmbed
+                        linkPlayEmbed = copy.deepcopy(linkPlayBaseEmbed)
                         linkPlayEmbed.set_description(description=f"📥 Last join was {player}, <t:{str(int(time.time()))}:R>.")
                         linkPlayEmbed.add_embed_field(name="Room Info", value=info)
                         linkPlayEmbed.set_timestamp(timestamp=creation)
