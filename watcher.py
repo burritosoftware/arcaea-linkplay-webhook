@@ -4,6 +4,7 @@ import select
 from dotenv import load_dotenv
 import os
 import json
+import time
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
 load_dotenv()
@@ -58,6 +59,8 @@ while True:
                     webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'))
                     linkPlayEmbed = DiscordEmbed(title="Link Play Room", description="New Link Play room created!", color="2ecc71")
                     linkPlayEmbed.add_embed_field(name="Room Info", value=f"🚪 `{room_code}`\n👥 **Players**\n>>> 👑 {player}")
+                    linkPlayEmbed.set_footer("Room info won't update for closed rooms or left players.")
+                    linkPlayEmbed.set_timestamp()
 
                     webhook.add_embed(linkPlayEmbed)
                     response = webhook.execute()
@@ -76,16 +79,14 @@ while True:
                     rc1 = msg.find("`", pl2 + 1) # find the index of the third backtick
                     rc2 = msg.find("`", rc1 + 1) # find the index of the fourth backtick
                     room_code = msg[rc1 + 1:rc2]
-                    print("Joiner " + player)
-                    print(room_code)
+
                     data = {}
                     with open("database.json", "r") as f:
                         data = json.load(f)
-                    print("testing")
+
                     if room_code in data:
-                        print("test")
-                        id = data['room_code']
+                        id = data[room_code]
                         webhook = DiscordWebhook(url=os.getenv('DISCORD_WEBHOOK'), id=id)
-                        webhook.description = ""
+                        webhook.description = f"📥 Last join was <t:{str(int(time.time()))}:R>."
                         print(webhook.get_embeds()[0])
                         webhook.edit()
